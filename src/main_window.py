@@ -1,11 +1,17 @@
 from tkinter import ttk
 
+from src.frame.home_frame import HomeFrame
+from src.frame.search_anime_frame import SearchAnimeFrame
 from src.frame.view_list_frame import ViewListFrame
 
 
 class Application(ttk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
+        self.homeFrameTab = HomeFrame(self.tabControl)
+        self.searchAnimeTab = SearchAnimeFrame(self.tabControl)
+        self.viewListTab = ViewListFrame(self.tabControl)
+        self.tabControl = ttk.Notebook(self)
         self.master = master
         self.pack()
         self.create_widgets()
@@ -15,14 +21,9 @@ class Application(ttk.Frame):
         self.rowconfigure(0, weight=1)
 
     def create_widgets(self):
-        self.tabControl = ttk.Notebook(self)
-
         self.tabControl.columnconfigure(0, weight=1)
         self.tabControl.rowconfigure(0, weight=1)
-        self.tab1 = ttk.Frame(self.tabControl)
-        self.tab2 = ttk.Frame(self.tabControl)
-        self.tab3 = ViewListFrame(self.tabControl)
-        self.tabControl.add(self.tab1, text='Accueil')
-        self.tabControl.add(self.tab2, text='Rechercher')
-        self.tabControl.add(self.tab3, text='View list')
+        self.tabControl.add(self.homeFrameTab, text='Accueil')
+        self.tabControl.add(self.searchAnimeTab, text='Rechercher')
+        self.tabControl.add(self.viewListTab, text='View list')
         self.tabControl.pack(fill='both', expand=1)
