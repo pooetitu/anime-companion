@@ -1,27 +1,22 @@
-import tkinter
-from tkinter import ttk, NW
-from PIL import Image, ImageTk
+from tkinter import ttk
+
+from src.cards.anime_info_card import AnimeInfoCard
+from src.frame.scrollable_frame import ScrollableFrame
 
 
-class HomeFrame(ttk.Frame):
+class HomeFrame(ScrollableFrame):
     def __init__(self, master=None):
         super().__init__(master)
         self.master = master
         self.pack()
-        self.frame1 = ttk.Frame(self)
+        self.label = ttk.Label(self.scrollable_frame, text="Accueil")
         self.create_widgets()
 
     def create_widgets(self):
-        self.frame1 = ttk.Frame(self)
-        self.image = Image.open('image/user_icon.png')
-        resized = self.image.resize((80, 80), Image.ANTIALIAS)
-        self.image = ImageTk.PhotoImage(resized)
-        self.label = ttk.Label(self)
-        self.label["text"] = "cooucou"
-        self.label.place(x=90, y=40)
-        self.canvas = tkinter.Canvas(self, width=80, height=80)
-        self.canvas.create_image(0, 0, anchor=NW, image=self.image)
-        self.canvas.place(x=0, y=0)
+        self.label.pack()
+        for i in range(0, 10):
+            self.anime_card = AnimeInfoCard(self.scrollable_frame)
+            self.anime_card.pack(pady=50)
 
 
     def say_hi(self):
