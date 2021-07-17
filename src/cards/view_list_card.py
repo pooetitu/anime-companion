@@ -3,17 +3,15 @@ from tkinter import ttk, NW
 import requests
 from PIL import Image, ImageTk
 
-
 class ViewListCard(ttk.Frame):
-    def __init__(self, anime, master=None):
+    def __init__(self, master=None):
         super().__init__(master)
-        self.anime = anime
         self.master = master
         self.pack()
+        self.card = ttk.Frame(self)
         self.create_widgets()
 
     def create_widgets(self):
-        self.card = ttk.Frame(self)
         self.card.pack(ipadx=10, ipady=10, fill='x')
 
         # IMAGE / TITLE / DATE IN LEFT
