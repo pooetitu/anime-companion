@@ -18,7 +18,7 @@ class SearchAnimeFrame(ttk.Frame):
         self.create_widgets()
         self.anime_list = []
         self.scrollable = ScrollableFrame(self)
-        self.scrollable.pack()
+        self.scrollable.pack(fill='both', expand=1)
 
     def create_widgets(self):
         self.searchButton.pack()
@@ -43,7 +43,7 @@ class SearchAnimeFrame(ttk.Frame):
         loop.run_until_complete(self.search_by_name())
 
     async def search_by_name(self):
-        animes = await self.kitsu_client.search('anime', self.searchField.get(), limit=5)
+        animes = await self.kitsu_client.search('anime', self.searchField.get())
         self.display_anime_infos(animes)
 
     def display_anime_infos(self, animes):
