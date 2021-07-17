@@ -10,7 +10,9 @@ class AnimeInfoCard(Frame):
         super().__init__(master, highlightbackground="grey", highlightthickness=1)
         self.anime = anime
         self.master = master
+        self.destroyed = False
         self.pack()
+        self.image_recuperation_thread = threading.Thread(target=self.get_image_from_url)
         self.imageLabel = ttk.Label(self)
         self.details = ttk.Frame(self)
         self.anime_name = ttk.Label(self.details, wraplength=290, text=self.anime.title)
@@ -18,8 +20,7 @@ class AnimeInfoCard(Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        image_recuperation_thread = threading.Thread(target=self.get_image_from_url)
-        image_recuperation_thread.start()
+        self.image_recuperation_thread.start()
         self.imageLabel.pack(side="left", anchor=NW)
 
         self.details.pack(side="left", anchor=NW)
@@ -31,7 +32,16 @@ class AnimeInfoCard(Frame):
 
     def get_image_from_url(self):
         image_from_url = requests.get(self.anime.poster_image_url, stream=True).raw
-        original = Image.open(image_from_url)
-        resized = original.resize((80, 80), Image.ANTIALIAS)
-        self.image = ImageTk.PhotoImage(resized)
-        self.imageLabel.configure(image=self.image)
+        original = None
+        if not self.destroyed:
+            original = Image.open(image_from_url)
+        if not self.destroyed:
+            resized = original.resize((80, 80), Image.ANTIALIAS)
+        if not self.destroyed:
+            self.image = ImageTk.PhotoImage(resized)
+        if not self.destroyed:
+            self.imageLabel.configure(image=self.image)
+
+    def destroy(self):
+        self.destroyed = True
+        super().destroy()

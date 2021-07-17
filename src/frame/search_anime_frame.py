@@ -48,17 +48,27 @@ class SearchAnimeFrame(ttk.Frame):
         loop.run_until_complete(self.search_by_name())
 
     async def search_by_name(self):
+        self.disable_search_buttons()
         animes = await self.kitsu_client.search('anime', self.searchField.get())
         self.display_anime_infos(animes)
+        self.enable_search_buttons()
 
     def display_anime_infos(self, animes):
         self.anime_list_clear()
         for anime in animes:
             card = AnimeInfoCard(anime, self.scrollable.scrollable_frame)
             self.anime_list.append(card)
-            card.pack(pady=5, anchor='nw', fill='both', expand=1)
+            card.pack(pady=5, fill='both', expand=1)
 
     def anime_list_clear(self):
         for card in self.anime_list:
             card.destroy()
         self.anime_list.clear()
+
+    def disable_search_buttons(self):
+        self.searchButton["state"] = "disabled"
+        self.selectFileButton["state"] = "disabled"
+
+    def enable_search_buttons(self):
+        self.searchButton["state"] = "normal"
+        self.selectFileButton["state"] = "normal"
