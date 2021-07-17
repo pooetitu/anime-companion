@@ -1,13 +1,13 @@
 import threading
-from tkinter import ttk, NW
+from tkinter import ttk, NW, Frame
 
 import requests
 from PIL import Image, ImageTk
 
 
-class AnimeInfoCard(ttk.Frame):
+class AnimeInfoCard(Frame):
     def __init__(self, anime, master=None):
-        super().__init__(master)
+        super().__init__(master, highlightbackground="grey", highlightthickness=1)
         self.anime = anime
         self.master = master
         self.pack()
@@ -22,7 +22,7 @@ class AnimeInfoCard(ttk.Frame):
         image_recuperation_thread.start()
         self.imageLabel.pack(side="left", anchor=NW)
 
-        self.details.pack(side="left")
+        self.details.pack(side="left", anchor=NW)
         self.anime_name.pack(anchor=NW)
         synopsis = ' '.join(self.anime.synopsis.split(' ')[:30]) +\
                    ('...' if len(self.anime.synopsis.split(' ')) > 30 else '')

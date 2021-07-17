@@ -56,7 +56,7 @@ class SearchAnimeFrame(ttk.Frame):
         for anime in animes:
             card = AnimeInfoCard(anime, self.scrollable.scrollable_frame)
             self.anime_list.append(card)
-            card.pack(pady=5, anchor='nw')
+            card.pack(pady=5, anchor='nw', fill='both', expand=1)
 
     def anime_list_clear(self):
         for card in self.anime_list:
