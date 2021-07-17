@@ -1,5 +1,8 @@
 from tkinter import ttk, filedialog
 
+from src.cards.anime_info_card import AnimeInfoCard
+from src.frame.scrollable_frame import ScrollableFrame
+
 
 class SearchAnimeFrame(ttk.Frame):
     def __init__(self, master=None):
@@ -11,6 +14,9 @@ class SearchAnimeFrame(ttk.Frame):
         self.searchButton = ttk.Button(self.container, text="Chercher")
         self.selectFileButton = ttk.Button(self, text="Chercher par image")
         self.create_widgets()
+        self.anime_list = []
+        self.scrollable = ScrollableFrame(self)
+        self.scrollable.pack()
 
     def create_widgets(self):
         self.searchButton.pack()
@@ -27,3 +33,15 @@ class SearchAnimeFrame(ttk.Frame):
             ("image", ".jpg")])
         if file:
             print(file.read())
+
+    def display_anime_infos(self, animes):
+        self.anime_list_clear()
+        for anime in animes:
+            card = AnimeInfoCard(self.scrollable.scrollable_frame)
+            self.anime_list.append(card)
+            card.pack(pady=5)
+
+    def anime_list_clear(self):
+        for card in self.anime_list:
+            card.destroy()
+        self.anime_list.clear()

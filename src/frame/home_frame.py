@@ -16,7 +16,7 @@ class HomeFrame(ScrollableFrame):
         self.label.pack()
         for i in range(0, 10):
             self.anime_card = AnimeInfoCard(self.scrollable_frame)
-            self.anime_card.pack(pady=50)
+            self.anime_card.pack(pady=5)
 
 
     def say_hi(self):
