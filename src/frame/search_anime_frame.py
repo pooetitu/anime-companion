@@ -1,4 +1,5 @@
 import asyncio
+import threading
 from tkinter import ttk, filedialog
 
 from src.cards.anime_info_card import AnimeInfoCard
@@ -25,7 +26,7 @@ class SearchAnimeFrame(ttk.Frame):
         self.container.pack(side="top")
         self.searchField.pack(in_=self.container, side="left")
         self.searchButton.pack(in_=self.container, side="left")
-        self.searchButton["command"] = self.search_by_name_wrapper
+        self.searchButton["command"] = self.search_thread
         self.selectFileButton["command"] = self.open_file_selection
         self.selectFileButton.pack()
 
@@ -36,6 +37,10 @@ class SearchAnimeFrame(ttk.Frame):
             ("image", ".jpg")])
         if file:
             print(file.read())
+
+    def search_thread(self):
+        image_recuperation_thread = threading.Thread(target=self.search_by_name_wrapper)
+        image_recuperation_thread.start()
 
     def search_by_name_wrapper(self):
         loop = asyncio.new_event_loop()

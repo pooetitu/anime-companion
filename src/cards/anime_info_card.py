@@ -1,5 +1,4 @@
 import threading
-import tkinter
 from tkinter import ttk, NW
 
 import requests
@@ -19,8 +18,8 @@ class AnimeInfoCard(ttk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        t1 = threading.Thread(target=self.get_image_from_url)
-        t1.start()
+        image_recuperation_thread = threading.Thread(target=self.get_image_from_url)
+        image_recuperation_thread.start()
         self.imageLabel.pack(side="left", anchor=NW)
 
         self.details.pack(side="left")
