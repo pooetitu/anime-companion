@@ -15,10 +15,12 @@ class ViewListCard(ttk.Frame):
         self.card.pack(ipadx=10, ipady=10, fill='x')
 
         # IMAGE / TITLE / DATE IN LEFT
-        self.mha_image = tk.PhotoImage(file='./assets/images/MHA.png')
-        self.mha_image = self.mha_image.zoom(2)
-        self.mha_image = self.mha_image.subsample(7)
-        ttk.Label(self, image=self.mha_image).pack(in_=self.card, side="left")
+        self.poster_original = Image.open('./assets/images/MHA.png')
+        poster_image = self.poster_original.resize((120, 150), Image.ANTIALIAS)
+        self.poster_image = ImageTk.PhotoImage(poster_image)
+        ttk.Label(self, image=self.poster_image).pack(in_=self.card, side="left", padx=5)
+
+
         ttk.Label(self, text="My Hero Academia").pack(in_=self.card, side="left")
         ttk.Label(self, text="(2017)").pack(in_=self.card, side="left")
 
@@ -31,12 +33,12 @@ class ViewListCard(ttk.Frame):
         self.setting_original = Image.open('./assets/icons/setting_icon.png')
         setting_resized = self.setting_original.resize((30, 30), Image.ANTIALIAS)
         self.setting_icon = ImageTk.PhotoImage(setting_resized)
-        ttk.Button(self, image=self.setting_icon, command=self.delete_clicked).pack(in_=self.card, side="right", padx=5)
+        ttk.Button(self, image=self.setting_icon, command=self.setting_clicked).pack(in_=self.card, side="right", padx=5)
 
         self.fav_original = Image.open('./assets/icons/fav_icon.png')
         fav_resized = self.fav_original.resize((30, 30), Image.ANTIALIAS)
         self.fav_icon = ImageTk.PhotoImage(fav_resized)
-        ttk.Button(self, image=self.fav_icon, command=self.delete_clicked).pack(in_=self.card, side="right", padx=5)
+        ttk.Button(self, image=self.fav_icon, command=self.fav_clicked).pack(in_=self.card, side="right", padx=5)
 
         # STAR LABEL
         self.star_original = Image.open('./assets/icons/star_icon.png')
@@ -69,4 +71,10 @@ class ViewListCard(ttk.Frame):
         separator.pack(fill='x')
 
     def delete_clicked(self):
+        exit(1)
+
+    def setting_clicked(self):
+        exit(1)
+
+    def fav_clicked(self):
         exit(1)
