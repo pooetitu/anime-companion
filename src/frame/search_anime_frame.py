@@ -7,15 +7,18 @@ from src.frame.scrollable_frame import ScrollableFrame
 
 
 class SearchAnimeFrame(ttk.Frame):
-    def __init__(self, master=None, kitsu_client=None):
+    def __init__(self, kitsu_client, function_display_anime_details, master=None):
         super().__init__(master)
         self.master = master
         self.kitsu_client = kitsu_client
+        self.function_display_anime_details = function_display_anime_details
         self.pack()
-        self.container = ttk.Frame(self)
-        self.searchField = ttk.Entry(self.container)
-        self.searchButton = ttk.Button(self.container, text="Chercher")
-        self.selectFileButton = ttk.Button(self, text="Chercher par image")
+        self.name_container = ttk.Frame(self)
+        self.image_container = ttk.Frame(self)
+        self.searchField = ttk.Entry(self.name_container)
+        self.searchButton = ttk.Button(self.name_container, text="Chercher")
+        self.selectFileButton = ttk.Button(self.image_container, text="Chercher par image")
+        self.similarityLabel = ttk.Label(self.image_container, text="")
         self.create_widgets()
         self.anime_list = []
         self.scrollable = ScrollableFrame(self)
@@ -23,12 +26,14 @@ class SearchAnimeFrame(ttk.Frame):
 
     def create_widgets(self):
         self.searchButton.pack()
-        self.container.pack(side="top")
-        self.searchField.pack(in_=self.container, side="left")
-        self.searchButton.pack(in_=self.container, side="left")
+        self.name_container.pack(side="top")
+        self.image_container.pack(side="top")
+        self.searchField.pack(in_=self.name_container, side="left")
+        self.searchButton.pack(in_=self.name_container, side="left")
         self.searchButton["command"] = self.search_thread
         self.selectFileButton["command"] = self.open_file_selection
-        self.selectFileButton.pack()
+        self.selectFileButton.pack(in_=self.image_container, side="left")
+        self.similarityLabel.pack(in_=self.image_container, side="left")
 
     def open_file_selection(self):
         file = filedialog.askopenfile(parent=self, mode='rb', title='Choisissez une image à rechercher', filetypes=[
@@ -44,6 +49,7 @@ class SearchAnimeFrame(ttk.Frame):
         anime = requests.post("https://api.trace.moe/search?anilistInfo", files={"image": file}).json()
         self.search_thread(name=anime["result"][0]["anilist"]["title"]["romaji"])
         self.enable_search_buttons()
+        self.similarityLabel.configure(text=str(int(anime["result"][0]["similarity"] * 100)) + "% de similarité")
 
     def search_thread(self, name=None):
         image_recuperation_thread = threading.Thread(target=self.search_by_name_wrapper, kwargs={'name': name})
@@ -59,6 +65,7 @@ class SearchAnimeFrame(ttk.Frame):
         if name is not None:
             animes = await self.kitsu_client.search('anime', name)
         else:
+            self.similarityLabel.configure(text="")
             animes = await self.kitsu_client.search('anime', self.searchField.get())
         self.display_anime_infos(animes)
         self.enable_search_buttons()
@@ -66,7 +73,7 @@ class SearchAnimeFrame(ttk.Frame):
     def display_anime_infos(self, animes):
         self.anime_list_clear()
         for anime in animes:
-            card = AnimeInfoCard(anime, self.scrollable.scrollable_frame)
+            card = AnimeInfoCard(anime, self.function_display_anime_details, self.scrollable.scrollable_frame)
             self.anime_list.append(card)
             card.pack(pady=5, fill='both', expand=1)
 
