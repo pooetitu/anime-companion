@@ -11,7 +11,7 @@ class AnimeInfoCard(ttk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        self.image = Image.open('C:\\Users\\pooetitu\\PycharmProjects\\anime-companion\\src\\image\\user_icon.png')
+        self.image = Image.open('C:\\Users\\LILOKE\\Desktop\\wallpapper.jpg')
         resized = self.image.resize((80, 80), Image.ANTIALIAS)
         self.image = ImageTk.PhotoImage(resized)
         self.canvas = tkinter.Canvas(self, width=80, height=80)
@@ -25,3 +25,12 @@ class AnimeInfoCard(ttk.Frame):
         self.anime_description = ttk.Label(self.details,wraplength=300,
                                            text="YTRFCVzyuqgvfyuzqvt yufvzqtyvfiq ztvftyuizqcvtu yvztyu ")
         self.anime_description.pack(anchor=NW)
+
+        self.infoButton = ttk.Button(self.details, text="infos")
+        self.infoButton.pack(side='right')
+        
+
+
+
+
+
