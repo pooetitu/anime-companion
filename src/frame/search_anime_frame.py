@@ -1,5 +1,5 @@
 import asyncio
-import threading
+import threading, requests
 from tkinter import ttk, filedialog
 
 from src.cards.anime_info_card import AnimeInfoCard
@@ -36,20 +36,30 @@ class SearchAnimeFrame(ttk.Frame):
             ("image", ".png"),
             ("image", ".jpg")])
         if file:
-            print(file.read())
+            search_image_thread = threading.Thread(target=self.search_by_image, kwargs={'file': file})
+            search_image_thread.start()
 
-    def search_thread(self):
-        image_recuperation_thread = threading.Thread(target=self.search_by_name_wrapper)
+    def search_by_image(self, file=None):
+        self.disable_search_buttons()
+        anime = requests.post("https://api.trace.moe/search?anilistInfo", files={"image": file}).json()
+        self.search_thread(name=anime["result"][0]["anilist"]["title"]["romaji"])
+        self.enable_search_buttons()
+
+    def search_thread(self, name=None):
+        image_recuperation_thread = threading.Thread(target=self.search_by_name_wrapper, kwargs={'name': name})
         image_recuperation_thread.start()
 
-    def search_by_name_wrapper(self):
+    def search_by_name_wrapper(self, name=None):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        loop.run_until_complete(self.search_by_name())
+        loop.run_until_complete(self.search_by_name(name=name))
 
-    async def search_by_name(self):
+    async def search_by_name(self, name=None):
         self.disable_search_buttons()
-        animes = await self.kitsu_client.search('anime', self.searchField.get())
+        if name is not None:
+            animes = await self.kitsu_client.search('anime', name)
+        else:
+            animes = await self.kitsu_client.search('anime', self.searchField.get())
         self.display_anime_infos(animes)
         self.enable_search_buttons()
 
@@ -62,7 +72,10 @@ class SearchAnimeFrame(ttk.Frame):
 
     def anime_list_clear(self):
         for card in self.anime_list:
-            card.destroy()
+            try:
+                card.destroy()
+            except Exception:
+                pass
         self.anime_list.clear()
 
     def disable_search_buttons(self):
