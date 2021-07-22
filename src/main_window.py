@@ -6,11 +6,11 @@ from src.frame.view_list_frame import ViewListFrame
 
 
 class Application(ttk.Frame):
-    def __init__(self, master=None):
+    def __init__(self, master=None, kitsu_client=None):
         super().__init__(master)
         self.tabControl = ttk.Notebook(self)
         self.homeFrameTab = HomeFrame(self.tabControl)
-        self.searchAnimeTab = SearchAnimeFrame(self.tabControl)
+        self.searchAnimeTab = SearchAnimeFrame(self.tabControl, kitsu_client)
         self.viewListTab = ViewListFrame(self.tabControl)
         self.master = master
         self.pack()
