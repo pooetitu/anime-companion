@@ -26,7 +26,7 @@ class Application(ttk.Frame):
 
     def display_anime_details_page(self, anime):
         self.tabControl.pack_forget()
-        self.animeDetailsFrame.anime = anime
+        self.animeDetailsFrame.set_anime(anime)
         self.animeDetailsFrame.pack(fill='both', expand=1)
 
     def close_anime_details_page(self):
