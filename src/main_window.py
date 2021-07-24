@@ -1,5 +1,6 @@
 from tkinter import ttk
 
+from src.frame.anime_details_frame import AnimeDetailsFrame
 from src.frame.home_frame import HomeFrame
 from src.frame.search_anime_frame import SearchAnimeFrame
 from src.frame.view_list_frame import ViewListFrame
@@ -8,10 +9,13 @@ from src.frame.view_list_frame import ViewListFrame
 class Application(ttk.Frame):
     def __init__(self, master=None, kitsu_client=None):
         super().__init__(master)
+        self.master = master
+        self.kitsu_client = kitsu_client
         self.tabControl = ttk.Notebook(self)
         self.homeFrameTab = HomeFrame(self.tabControl)
-        self.searchAnimeTab = SearchAnimeFrame(self.tabControl, kitsu_client)
+        self.searchAnimeTab = SearchAnimeFrame(kitsu_client, self.display_anime_details_page, self.tabControl)
         self.viewListTab = ViewListFrame(self.tabControl)
+        self.animeDetailsFrame = AnimeDetailsFrame(kitsu_client, self.close_anime_details_page, master=self)
         self.master = master
         self.pack()
         self.create_widgets()
@@ -19,6 +23,15 @@ class Application(ttk.Frame):
         self.style.configure('TNotebook.Tab', width=self.master.winfo_screenwidth())
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
+
+    def display_anime_details_page(self, anime):
+        self.tabControl.pack_forget()
+        self.animeDetailsFrame.set_anime(anime)
+        self.animeDetailsFrame.pack(fill='both', expand=1)
+
+    def close_anime_details_page(self):
+        self.animeDetailsFrame.pack_forget()
+        self.tabControl.pack(fill='both', expand=1)
 
     def create_widgets(self):
         self.tabControl.columnconfigure(0, weight=1)

@@ -6,9 +6,10 @@ from PIL import Image, ImageTk
 
 
 class AnimeInfoCard(Frame):
-    def __init__(self, anime, master=None):
+    def __init__(self, anime, function_display_anime_details, master=None):
         super().__init__(master, highlightbackground="grey", highlightthickness=1)
         self.anime = anime
+        self.function_display_anime_details = function_display_anime_details
         self.master = master
         self.destroyed = False
         self.pack()
@@ -25,10 +26,17 @@ class AnimeInfoCard(Frame):
 
         self.details.pack(side="left", anchor=NW)
         self.anime_name.pack(anchor=NW)
-        synopsis = ' '.join(self.anime.synopsis.split(' ')[:30]) +\
+        synopsis = ' '.join(self.anime.synopsis.split(' ')[:30]) + \
                    ('...' if len(self.anime.synopsis.split(' ')) > 30 else '')
         self.anime_description.configure(text=synopsis)
         self.anime_description.pack(anchor=NW)
+        self.bind("<Button-1>", self.open_anime_details)
+        self.details.bind("<Button-1>", self.open_anime_details)
+        self.anime_name.bind("<Button-1>", self.open_anime_details)
+        self.anime_description.bind("<Button-1>", self.open_anime_details)
+
+    def open_anime_details(self, event):
+        self.function_display_anime_details(self.anime)
 
     def get_image_from_url(self):
         image_from_url = requests.get(self.anime.poster_image_url, stream=True).raw
