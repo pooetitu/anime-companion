@@ -26,9 +26,6 @@ class HomeFrame(ttk.Frame):
 
     def create_widgets(self):
         self.label.pack()
-        for i in range(0, 10):
-            self.anime_card = AnimeInfoCard(self.scrollable_frame)
-            self.anime_card.pack(pady=50)
 
 
 

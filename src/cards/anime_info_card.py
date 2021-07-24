@@ -1,37 +1,58 @@
-import tkinter
-from tkinter import ttk, NW
+import threading
+from tkinter import ttk, NW, Frame
+
+import requests
 from PIL import Image, ImageTk
 
 
-class AnimeInfoCard(ttk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
+class AnimeInfoCard(Frame):
+    def __init__(self, anime, function_display_anime_details, master=None):
+        super().__init__(master, highlightbackground="grey", highlightthickness=1)
+        self.anime = anime
+        self.function_display_anime_details = function_display_anime_details
         self.master = master
+        self.destroyed = False
         self.pack()
+        self.image_recuperation_thread = threading.Thread(target=self.get_image_from_url)
+        self.imageLabel = ttk.Label(self)
+        self.details = ttk.Frame(self)
+        self.anime_name = ttk.Label(self.details, wraplength=290, text=self.anime.title)
+        self.anime_description = ttk.Label(self.details, wraplength=290)
         self.create_widgets()
 
     def create_widgets(self):
 
-        self.image = Image.open('C:\\Users\\LILOKE\\Desktop\\wallpapper.jpg')
-        resized = self.image.resize((80, 80), Image.ANTIALIAS)
-        self.image = ImageTk.PhotoImage(resized)
-        self.canvas = tkinter.Canvas(self, width=80, height=80)
-        self.canvas.create_image(0, 0, anchor=NW, image=self.image)
-        self.canvas.pack(side="left")
-
-        self.details = ttk.Frame(self)
-        self.details.pack(side="left")
-        self.anime_name = ttk.Label(self.details, text="Boruto")
+        self.image_recuperation_thread.start()
+        self.imageLabel.pack(side="left", anchor=NW)
+        self.details.pack(side="left", anchor=NW)
         self.anime_name.pack(anchor=NW)
-        self.anime_description = ttk.Label(self.details,wraplength=300,
-                                           text="YTRFCVzyuqgvfyuzqvt yufvzqtyvfiq ztvftyuizqcvtu yvztyu ")
+        synopsis = ' '.join(self.anime.synopsis.split(' ')[:30]) + \
+                   ('...' if len(self.anime.synopsis.split(' ')) > 30 else '')
+        self.anime_description.configure(text=synopsis)
         self.anime_description.pack(anchor=NW)
-
         self.infoButton = ttk.Button(self.details, text="infos")
         self.infoButton.pack(side='right')
-        
+        self.bind("<Button-1>", self.open_anime_details)
+        self.details.bind("<Button-1>", self.open_anime_details)
+        self.anime_name.bind("<Button-1>", self.open_anime_details)
+        self.anime_description.bind("<Button-1>", self.open_anime_details)
 
+    def open_anime_details(self, event):
+        self.function_display_anime_details(self.anime)
 
+    def get_image_from_url(self):
+        image_from_url = requests.get(self.anime.poster_image_url, stream=True).raw
+        original = None
+        if not self.destroyed:
+            original = Image.open(image_from_url)
+        if not self.destroyed:
+            resized = original.resize((80, 80), Image.ANTIALIAS)
+        if not self.destroyed:
+            self.image = ImageTk.PhotoImage(resized)
+        if not self.destroyed:
+            self.imageLabel.configure(image=self.image)
 
-
+    def destroy(self):
+        self.destroyed = True
+        super().destroy()
 
