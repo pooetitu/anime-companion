@@ -4,10 +4,9 @@ import json
 from PIL import Image, ImageTk
 
 class ViewListCard(ttk.Frame):
-    def __init__(self, anime, index, master=None):
+    def __init__(self, anime, master=None):
         super().__init__(master)
         self.master = master
-        self.index = index
         self.anime = anime
         self.pack()
         self.card = ttk.Frame(self)
@@ -30,15 +29,14 @@ class ViewListCard(ttk.Frame):
         self.delete_original = Image.open('./assets/icons/delete_icon.png')
         delete_resized = self.delete_original.resize((30, 30), Image.ANTIALIAS)
         self.delete_icon = ImageTk.PhotoImage(delete_resized)
-        ttk.Button(self, image=self.delete_icon, command=self.delete_clicked).pack(in_=self.card, side="right", padx=5)
+        self.delete_button = ttk.Button(self, image=self.delete_icon)
+        self.delete_button.pack(in_=self.card, side="right", padx=5)
 
         # STAR LABEL
         self.star_original = Image.open('./assets/icons/star_icon.png')
         star_resized = self.star_original.resize((20, 20), Image.ANTIALIAS)
         self.star_icon = ImageTk.PhotoImage(star_resized)
         ttk.Label(self, image=self.star_icon).pack(in_=self.card, side="right")
-
-        ttk.Label(self, text=self.anime["rating"]).pack(in_=self.card, side="right")
 
         # MENU BUTTON
 
@@ -61,12 +59,3 @@ class ViewListCard(ttk.Frame):
         # Separator
         separator = ttk.Separator(self, orient='horizontal')
         separator.pack(fill='x')
-
-    def delete_clicked(self):
-        file = open("./assets/anime.json", "r")
-        data = json.load(file)
-        del data['animes'][self.index]
-        file = open("./assets/anime.json", "w")
-        json.dump(data, file)
-        file.close()
-        self.destroy()

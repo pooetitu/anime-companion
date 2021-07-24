@@ -1,16 +1,8 @@
 import tkinter as tk
-
 import kitsu
 
 from src.main_window import Application
-
-def load_view_list_data():
-    print()
-    return 1
-
-
-def save_view_list_data(anime_list):
-    print()
+from src.utils.file_utils import load_view_list_data
 
 root = tk.Tk()
 root.title("Anime companion")
