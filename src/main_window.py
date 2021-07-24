@@ -25,6 +25,7 @@ class Application(ttk.Frame):
         self.style.configure('TNotebook.Tab', width=self.master.winfo_screenwidth())
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
+        self.close_anime_details_page()
 
     def display_anime_details_page(self, anime):
         self.tabControl.pack_forget()
