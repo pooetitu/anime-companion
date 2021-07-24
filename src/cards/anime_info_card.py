@@ -11,11 +11,8 @@ class AnimeInfoCard(ttk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-<<<<<<< Updated upstream
+
         self.image = Image.open('C:\\Users\\LILOKE\\Desktop\\wallpapper.jpg')
-=======
-        self.image = Image.open('C:\\Users\\LILOKE\\Desktop\wallpapper.jpg');
->>>>>>> Stashed changes
         resized = self.image.resize((80, 80), Image.ANTIALIAS)
         self.image = ImageTk.PhotoImage(resized)
         self.canvas = tkinter.Canvas(self, width=80, height=80)

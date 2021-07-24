@@ -21,18 +21,15 @@ class HomeFrame(ttk.Frame):
         self.anime_list = []
         self.scrollable = ScrollableFrame(self)
         self.scrollable.pack(fill='both', expand=1)
-        self.label = ttk.Label(self.scrollable, text="Accueil")
-        self.label.pack()
         self.create_widgets()
 
-<<<<<<< Updated upstream
+
     def create_widgets(self):
         self.label.pack()
         for i in range(0, 10):
             self.anime_card = AnimeInfoCard(self.scrollable_frame)
             self.anime_card.pack(pady=50)
-=======
->>>>>>> Stashed changes
+
 
 
     def create_widgets(self):
