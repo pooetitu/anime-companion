@@ -32,16 +32,6 @@ class ViewListCard(ttk.Frame):
         self.delete_icon = ImageTk.PhotoImage(delete_resized)
         ttk.Button(self, image=self.delete_icon, command=self.delete_clicked).pack(in_=self.card, side="right", padx=5)
 
-        self.setting_original = Image.open('./assets/icons/setting_icon.png')
-        setting_resized = self.setting_original.resize((30, 30), Image.ANTIALIAS)
-        self.setting_icon = ImageTk.PhotoImage(setting_resized)
-        ttk.Button(self, image=self.setting_icon, command=self.setting_clicked).pack(in_=self.card, side="right", padx=5)
-
-        self.fav_original = Image.open('./assets/icons/fav_icon.png')
-        fav_resized = self.fav_original.resize((30, 30), Image.ANTIALIAS)
-        self.fav_icon = ImageTk.PhotoImage(fav_resized)
-        ttk.Button(self, image=self.fav_icon, command=self.fav_clicked).pack(in_=self.card, side="right", padx=5)
-
         # STAR LABEL
         self.star_original = Image.open('./assets/icons/star_icon.png')
         star_resized = self.star_original.resize((20, 20), Image.ANTIALIAS)
@@ -80,9 +70,3 @@ class ViewListCard(ttk.Frame):
         json.dump(data, file)
         file.close()
         self.destroy()
-
-    def setting_clicked(self):
-        exit(1)
-
-    def fav_clicked(self):
-        exit(1)
