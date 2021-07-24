@@ -1,0 +1,20 @@
+{
+  "animes": [
+    {
+      "name": "My Hero Academia",
+      "image": "./assets/images/MHA.png",
+      "date": 2017,
+      "rating": 5,
+      "status": "qzd",
+      "nbEpisodeSeen": 42
+    },
+    {
+      "name": "My Hero pas Academia",
+      "image": "./assets/images/MHA.png",
+      "date": 2017,
+      "rating": 10,
+      "status": "qzd",
+      "nbEpisodeSeen": 42
+    }
+  ]
+}
