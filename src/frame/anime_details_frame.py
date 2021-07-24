@@ -7,6 +7,8 @@ from PIL import Image, ImageTk
 from kitsu.models import Anime
 
 from src.frame.scrollable_frame import ScrollableFrame
+from src.status_enum import ViewStatus
+from src.utils.file_utils import save_view_list_data
 
 
 class AnimeDetailsFrame(Frame):
@@ -61,7 +63,9 @@ class AnimeDetailsFrame(Frame):
             self.image_label.configure(image=self.image)
 
     def add_anime_to_list(self):
-        self.anime_list[self.anime.title] = self.anime
+        self.anime_list[self.anime.title] = {"title": self.anime.title, "date": self.anime.started_at,
+                                             "viewed_episodes": 0, "status": ViewStatus.NOT_STARTED, "favorite": False}
+        save_view_list_data(self.anime_list)
 
     def destroy(self):
         self.destroyed = True
