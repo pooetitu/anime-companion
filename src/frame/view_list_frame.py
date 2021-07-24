@@ -2,6 +2,7 @@ from src.cards.view_list_card import ViewListCard
 from tkinter import ttk
 from PIL import Image, ImageTk
 from src.frame.scrollable_frame import ScrollableFrame
+import json
 
 
 class ViewListFrame(ttk.Frame):
@@ -16,6 +17,10 @@ class ViewListFrame(ttk.Frame):
 
     def create_widgets(self):
         print()
-        for i in range(0, 10):
-            self.anime_card = ViewListCard(self.scrollable.scrollable_frame)
+        file = open("./assets/anime.json")
+        data = json.load(file)
+        for index, anime in enumerate(data['animes']):
+            # print(anime)
+            self.anime_card = ViewListCard(anime, index, self.scrollable.scrollable_frame)
             self.anime_card.pack(pady=50)
+        file.close()
