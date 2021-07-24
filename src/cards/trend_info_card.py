@@ -9,7 +9,6 @@ class TrendInfoCard(Frame):
     def __init__(self, anime, master=None):
         super().__init__(master, highlightbackground="grey", highlightthickness=1)
         self.anime = anime
-        print(" ici : ", self.anime.name)
         self.master = master
         self.destroyed = False
         self.pack()
@@ -23,16 +22,16 @@ class TrendInfoCard(Frame):
     def create_widgets(self):
         self.image_recuperation_thread.start()
         self.imageLabel.pack(side="left", anchor=NW)
-
         self.details.pack(side="left", anchor=NW)
         self.anime_name.pack(anchor=NW)
         synopsis = ' '.join(self.anime.description.split(' ')[:30]) +\
                    ('...' if len(self.anime.description.split(' ')) > 30 else '')
         self.anime_description.configure(text=synopsis)
         self.anime_description.pack(anchor=NW)
+        self.info_button = ttk.Button(self, text="infos")
+        self.info_button.pack(anchor="center")
 
     def get_image_from_url(self):
-        print(" ici 2 : ", self.anime.image)
         image_from_url = requests.get(self.anime.image, stream=True).raw
         original = None
         if not self.destroyed:
