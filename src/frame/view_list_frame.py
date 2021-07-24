@@ -6,7 +6,7 @@ import json
 
 
 class ViewListFrame(ttk.Frame):
-    def __init__(self, master=None):
+    def __init__(self, master=None, anime_list=None):
         super().__init__(master)
         self.master = master
         self.pack()

@@ -7,7 +7,7 @@ from PIL import Image, ImageTk
 
 
 class AnimeDetailsFrame(ttk.Frame):
-    def __init__(self, kitsu_client, function_close, master=None):
+    def __init__(self, kitsu_client, function_close, master=None, anime_list=None):
         super().__init__(master)
         self.destroyed = False
         self.anime = None

@@ -7,15 +7,17 @@ from src.frame.view_list_frame import ViewListFrame
 
 
 class Application(ttk.Frame):
-    def __init__(self, master=None, kitsu_client=None):
+    def __init__(self, master=None, kitsu_client=None, anime_list=None):
         super().__init__(master)
         self.master = master
+        self.anime_list = anime_list
         self.kitsu_client = kitsu_client
         self.tabControl = ttk.Notebook(self)
         self.homeFrameTab = HomeFrame(self.tabControl)
         self.searchAnimeTab = SearchAnimeFrame(kitsu_client, self.display_anime_details_page, self.tabControl)
-        self.viewListTab = ViewListFrame(self.tabControl)
-        self.animeDetailsFrame = AnimeDetailsFrame(kitsu_client, self.close_anime_details_page, master=self)
+        self.viewListTab = ViewListFrame(self.tabControl, anime_list=anime_list)
+        self.animeDetailsFrame = AnimeDetailsFrame(kitsu_client, self.close_anime_details_page, master=self,
+                                                   anime_list=anime_list)
         self.master = master
         self.pack()
         self.create_widgets()
