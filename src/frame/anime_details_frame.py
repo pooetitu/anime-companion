@@ -20,7 +20,7 @@ class AnimeDetailsFrame(Frame):
         self.master = master
         self.anime_scrollable_frame = ScrollableFrame(self)
         self.close_button = ttk.Button(self, text="Retour")
-        self.add_anime = ttk.Button(self, text="Ajouter à ma liste")
+        self.add_anime_button = ttk.Button(self)
         self.image_label = ttk.Label(self.anime_scrollable_frame.scrollable_frame)
         self.infos_frame = Frame(self.anime_scrollable_frame.scrollable_frame)
         self.date_label = ttk.Label(self.infos_frame)
@@ -30,8 +30,7 @@ class AnimeDetailsFrame(Frame):
         self.anime_description = ttk.Label(self.anime_scrollable_frame.scrollable_frame, wraplength=300)
         self.anime_description = ttk.Label(self.anime_scrollable_frame.scrollable_frame, wraplength=300)
         self.close_button['command'] = function_close
-        self.add_anime['command'] = self.add_anime_to_list
-        self.add_anime.pack(side="top")
+        self.add_anime_button.pack(side="top")
         self.close_button.pack(side='bottom', pady=10)
         self.anime_scrollable_frame.pack(side="top", fill="both", expand=True)
         self.image_label.pack(side="top", padx=20)
@@ -43,12 +42,19 @@ class AnimeDetailsFrame(Frame):
 
     def set_anime(self, anime: Anime):
         self.anime = anime
+        self.image_recuperation_thread = threading.Thread(target=self.get_image_from_url)
+        self.image_recuperation_thread.start()
         self.anime_name.configure(text=anime.title)
         self.status_label.configure(text="Status : " + anime.status)
         self.date_label.configure(text="Date de début: " + anime.started_at.strftime("%d %B %Y"))
         self.anime_description.configure(text=anime.synopsis)
-        self.image_recuperation_thread = threading.Thread(target=self.get_image_from_url)
-        self.image_recuperation_thread.start()
+        if self.anime.title in self.anime_list:
+            self.add_anime_button.configure(text="Retirer de ma liste")
+            self.add_anime_button['command'] = self.remove_anime_to_list
+        else:
+            self.add_anime_button.configure(text="Ajouter à ma liste")
+            self.add_anime_button['command'] = self.add_anime_to_list
+
 
     def get_image_from_url(self):
         image_from_url = requests.get(self.anime.poster_image_url, stream=True).raw
@@ -64,7 +70,16 @@ class AnimeDetailsFrame(Frame):
 
     def add_anime_to_list(self):
         self.anime_list[self.anime.title] = {"title": self.anime.title, "date": self.anime.started_at,
-                                             "viewed_episodes": 0, "status": ViewStatus.NOT_STARTED, "favorite": False}
+                                             "viewed_episodes": 0, "status": ViewStatus.NOT_STARTED,
+                                             "favorite": False}
+        self.add_anime_button.configure(text="Retirer de ma liste")
+        self.add_anime_button['command'] = self.remove_anime_to_list
+        save_view_list_data(self.anime_list)
+
+    def remove_anime_to_list(self):
+        del self.anime_list[self.anime.title]
+        self.add_anime_button.configure(text="Ajouter à ma liste")
+        self.add_anime_button['command'] = self.add_anime_to_list
         save_view_list_data(self.anime_list)
 
     def destroy(self):
