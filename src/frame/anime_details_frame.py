@@ -68,7 +68,7 @@ class AnimeDetailsFrame(Frame):
             self.image_label.configure(image=self.image)
 
     def add_anime_to_list(self):
-        self.anime_list.add_anime({"title": self.anime.title, "date": self.anime.started_at,
+        self.anime_list.add_anime({"title": self.anime.title,
                                    "viewed_episodes": 0, "status": ViewStatus.NOT_STARTED,
                                    "favorite": False})
         self.add_anime_button.configure(text="Retirer de ma liste")

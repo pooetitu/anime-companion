@@ -29,7 +29,7 @@ class ViewListFrame(ttk.Frame):
         for card in self.anime_card.values():
             card.destroy()
         for anime in self.anime_list.animes.values():
-            anime_card = ViewListCard(anime, self.scrollable.scrollable_frame, self.kitsu_client)
+            anime_card = ViewListCard(anime, self.scrollable.scrollable_frame, self.kitsu_client, self.anime_list)
             anime_card.delete_button["command"] = lambda title=anime["title"]: self.delete_clicked(title)
             anime_card.pack(pady=10, anchor="nw", fill='both', expand=1)
             self.anime_card[anime["title"]] = anime_card

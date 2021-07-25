@@ -1,7 +1,8 @@
 from enum import Enum
 
 
-class ViewStatus(Enum):
-    FINISHED = 0
-    ONGOING = 1
-    NOT_STARTED = 2
+class ViewStatus(str, Enum):
+    NOT_STARTED = "Pas commencer"
+    ONGOING = "En cours"
+    FINISHED = "Fini"
+    ABANDONED = "Abandonne"

@@ -8,15 +8,18 @@ class AnimeList:
 
     def add_anime(self, anime):
         self.animes[anime["title"]] = anime
-        save_view_list_data(self.animes)
+        self.save_list()
         for callback in self.callbacks:
             callback()
 
     def remove_anime(self, anime_title):
         del self.animes[anime_title]
-        save_view_list_data(self.animes)
+        self.save_list()
         for callback in self.callbacks:
             callback()
 
     def add_callback(self, callback):
         self.callbacks.append(callback)
+
+    def save_list(self):
+        save_view_list_data(self.animes)
