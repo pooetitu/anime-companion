@@ -1,5 +1,5 @@
-import asyncio
-import threading, requests
+import requests
+import threading
 from tkinter import ttk
 from tkinter.ttk import Frame
 
@@ -8,11 +8,11 @@ from kitsu.models import Anime
 
 from src.frame.scrollable_frame import ScrollableFrame
 from src.status_enum import ViewStatus
-from src.utils.file_utils import save_view_list_data
+from src.utils.AnimeList import AnimeList
 
 
 class AnimeDetailsFrame(Frame):
-    def __init__(self, kitsu_client, function_close, master=None, anime_list: dict = None):
+    def __init__(self, kitsu_client, function_close, master=None, anime_list: AnimeList = None):
         super().__init__(master)
         self.destroyed = False
         self.anime = None
@@ -48,13 +48,12 @@ class AnimeDetailsFrame(Frame):
         self.status_label.configure(text="Status : " + anime.status)
         self.date_label.configure(text="Date de début: " + anime.started_at.strftime("%d %B %Y"))
         self.anime_description.configure(text=anime.synopsis)
-        if self.anime.title in self.anime_list:
+        if self.anime.title in self.anime_list.animes:
             self.add_anime_button.configure(text="Retirer de ma liste")
             self.add_anime_button['command'] = self.remove_anime_to_list
         else:
             self.add_anime_button.configure(text="Ajouter à ma liste")
             self.add_anime_button['command'] = self.add_anime_to_list
-
 
     def get_image_from_url(self):
         image_from_url = requests.get(self.anime.poster_image_url, stream=True).raw
@@ -69,18 +68,16 @@ class AnimeDetailsFrame(Frame):
             self.image_label.configure(image=self.image)
 
     def add_anime_to_list(self):
-        self.anime_list[self.anime.title] = {"title": self.anime.title, "date": self.anime.started_at,
-                                             "viewed_episodes": 0, "status": ViewStatus.NOT_STARTED,
-                                             "favorite": False}
+        self.anime_list.add_anime({"title": self.anime.title, "date": self.anime.started_at,
+                                   "viewed_episodes": 0, "status": ViewStatus.NOT_STARTED,
+                                   "favorite": False})
         self.add_anime_button.configure(text="Retirer de ma liste")
         self.add_anime_button['command'] = self.remove_anime_to_list
-        save_view_list_data(self.anime_list)
 
     def remove_anime_to_list(self):
-        del self.anime_list[self.anime.title]
+        self.anime_list.remove_anime(self.anime.title)
         self.add_anime_button.configure(text="Ajouter à ma liste")
         self.add_anime_button['command'] = self.add_anime_to_list
-        save_view_list_data(self.anime_list)
 
     def destroy(self):
         self.destroyed = True

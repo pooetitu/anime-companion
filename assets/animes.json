@@ -1,9 +1,37 @@
 {
-    "Naruto: Shippuuden Movie 1": {
-        "date": "2007-08-04 00:00:00",
+    "Attack on Titan": {
+        "date": "2013-04-07 00:00:00",
         "favorite": false,
         "status": "ViewStatus.NOT_STARTED",
-        "title": "Naruto: Shippuuden Movie 1",
+        "title": "Attack on Titan",
+        "viewed_episodes": 0
+    },
+    "Boku no Hero Academia 2": {
+        "date": "2017-04-01 00:00:00",
+        "favorite": false,
+        "status": "ViewStatus.NOT_STARTED",
+        "title": "Boku no Hero Academia 2",
+        "viewed_episodes": 0
+    },
+    "Kimetsu no Yaiba": {
+        "date": "2019-04-06 00:00:00",
+        "favorite": false,
+        "status": "ViewStatus.NOT_STARTED",
+        "title": "Kimetsu no Yaiba",
+        "viewed_episodes": 0
+    },
+    "Naruto": {
+        "date": "2002-10-03 00:00:00",
+        "favorite": false,
+        "status": "ViewStatus.NOT_STARTED",
+        "title": "Naruto",
+        "viewed_episodes": 0
+    },
+    "One Piece": {
+        "date": "1999-10-20 00:00:00",
+        "favorite": false,
+        "status": "ViewStatus.NOT_STARTED",
+        "title": "One Piece",
         "viewed_episodes": 0
     }
 }

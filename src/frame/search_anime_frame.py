@@ -1,5 +1,6 @@
 import asyncio
-import threading, requests
+import requests
+import threading
 from tkinter import ttk, filedialog
 
 from src.cards.anime_info_card import AnimeInfoCard

@@ -1,6 +1,7 @@
 import asyncio
 import threading
 from tkinter import ttk
+
 import requests
 from PIL import Image, ImageTk
 from kitsu.models import Anime
@@ -16,8 +17,6 @@ class ViewListCard(ttk.Frame):
         self.create_widgets()
         threading.Thread(target=self.search_by_name_wrapper, kwargs={'name': anime["title"]}).start()
         self.pack()
-
-
 
     def create_widgets(self):
 
@@ -41,7 +40,6 @@ class ViewListCard(ttk.Frame):
         self.get_image_from_url(anime.poster_image_url)
         self.title.configure(text=anime.title)
         self.date.configure(text=anime.started_at.strftime("%d %B %Y"))
-
 
     def get_image_from_url(self, url):
         image_from_url = requests.get(url, stream=True).raw
