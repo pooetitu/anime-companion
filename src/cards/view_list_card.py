@@ -1,61 +1,67 @@
-import tkinter as tk
-from tkinter import ttk, NW
-import json
+import asyncio
+import threading
+from tkinter import ttk
+import requests
 from PIL import Image, ImageTk
+from kitsu.models import Anime
+
 
 class ViewListCard(ttk.Frame):
-    def __init__(self, anime, master=None):
+    def __init__(self, anime, master=None, kitsu=None):
         super().__init__(master)
+        self.destroyed = False
+        self.kitsu_client = kitsu
         self.master = master
         self.anime = anime
-        self.pack()
-        self.card = ttk.Frame(self)
         self.create_widgets()
+        threading.Thread(target=self.search_by_name_wrapper, kwargs={'name': anime["title"]}).start()
+        self.pack()
+
+
 
     def create_widgets(self):
-        self.card.pack(ipadx=10, ipady=10, fill='x')
+        # self.card.pack(ipadx=10, ipady=10, fill='x')
 
         # IMAGE / TITLE / DATE IN LEFT
-        self.poster_original = Image.open(self.anime["image"])
-        poster_image = self.poster_original.resize((120, 150), Image.ANTIALIAS)
-        self.poster_image = ImageTk.PhotoImage(poster_image)
-        ttk.Label(self, image=self.poster_image).pack(in_=self.card, side="left", padx=5)
+        self.image_label = ttk.Label(self)
+        self.image_label.pack(in_=self, side="left", padx=5)
 
-
-        ttk.Label(self, text=self.anime["name"]).pack(in_=self.card, side="left")
-        ttk.Label(self, text=self.anime["date"]).pack(in_=self.card, side="left")
+        self.title = ttk.Label(self)
+        self.title.pack(side="left")
+        self.date = ttk.Label(self)
+        self.date.pack(in_=self, side="left")
 
         # OPITONS RIGHT
         self.delete_original = Image.open('./assets/icons/delete_icon.png')
         delete_resized = self.delete_original.resize((30, 30), Image.ANTIALIAS)
         self.delete_icon = ImageTk.PhotoImage(delete_resized)
         self.delete_button = ttk.Button(self, image=self.delete_icon)
-        self.delete_button.pack(in_=self.card, side="right", padx=5)
+        self.delete_button.pack(side="right", padx=5)
 
-        # STAR LABEL
-        self.star_original = Image.open('./assets/icons/star_icon.png')
-        star_resized = self.star_original.resize((20, 20), Image.ANTIALIAS)
-        self.star_icon = ImageTk.PhotoImage(star_resized)
-        ttk.Label(self, image=self.star_icon).pack(in_=self.card, side="right")
+    def set_anime_card(self, anime: Anime):
+        # print(anime.title, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        self.get_image_from_url(anime.poster_image_url)
+        self.title.configure(text=anime.title)
+        self.date.configure(text=anime.started_at.strftime("%d %B %Y"))
 
-        # MENU BUTTON
 
-        options = ('En cours', 'Je sais pas', 'Mehdi la merde')
-        # create the Menubutton
-        menu_button = ttk.Menubutton(self, text=self.anime["status"])
+    def get_image_from_url(self, url):
+        image_from_url = requests.get(url, stream=True).raw
+        original = None
+        if not self.destroyed:
+            original = Image.open(image_from_url)
+        if not self.destroyed:
+            resized = original.resize((80, 80), Image.ANTIALIAS)
+        if not self.destroyed:
+            self.image = ImageTk.PhotoImage(resized)
+        if not self.destroyed:
+            self.image_label.configure(image=self.image)
 
-        # create a new menu instance
-        menu = tk.Menu(menu_button, tearoff=0)
+    def search_by_name_wrapper(self, name=None):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(self.search_by_name(name=name))
 
-        for option in options:
-            menu.add_radiobutton(
-                label=option,
-                value=option)
-
-        menu_button["menu"] = menu
-
-        menu_button.pack(in_=self.card, side="right")
-
-        # Separator
-        separator = ttk.Separator(self, orient='horizontal')
-        separator.pack(fill='x')
+    async def search_by_name(self, name=None):
+        display_info = await self.kitsu_client.search('anime', name)
+        self.set_anime_card(display_info[0])
