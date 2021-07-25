@@ -1,8 +1,8 @@
-import requests
 import threading
 from tkinter import ttk
 from tkinter.ttk import Frame
 
+import requests
 from PIL import Image, ImageTk
 from kitsu.models import Anime
 

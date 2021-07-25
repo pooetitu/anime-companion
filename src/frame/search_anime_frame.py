@@ -1,7 +1,8 @@
 import asyncio
-import requests
 import threading
 from tkinter import ttk, filedialog
+
+import requests
 
 from src.cards.anime_info_card import AnimeInfoCard
 from src.frame.scrollable_frame import ScrollableFrame

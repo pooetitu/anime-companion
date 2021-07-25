@@ -1,6 +1,5 @@
 import asyncio
 import threading
-import tkinter
 from tkinter import ttk
 
 import requests
@@ -71,7 +70,8 @@ class ViewListCard(ttk.Frame):
         self.display_info: Anime = anime
         self.title.configure(text=anime.title)
         self.date.configure(text=anime.started_at.strftime("%d %B %Y"))
-        text = ("%d/%s episodes" % (self.anime["viewed_episodes"], self.display_info.episode_count if self.display_info and self.display_info.episode_count else "?"))
+        text = ("%d/%s episodes" % (self.anime["viewed_episodes"],
+                                    self.display_info.episode_count if self.display_info and self.display_info.episode_count else "?"))
         self.episode_count_label.configure(text=text)
         self.get_image_from_url(anime.poster_image_url)
 
@@ -97,7 +97,8 @@ class ViewListCard(ttk.Frame):
         self.set_anime_card(display_info[0])
 
     def add_viewed_episode(self):
-        if self.display_info and not self.display_info.episode_count or self.anime["viewed_episodes"] < self.display_info.episode_count:
+        if self.display_info and not self.display_info.episode_count or self.anime[
+            "viewed_episodes"] < self.display_info.episode_count:
             self.anime["viewed_episodes"] += 1
             text = ("%d/%s episodes" % (self.anime["viewed_episodes"],
                                         self.display_info.episode_count if self.display_info and self.display_info.episode_count else "?"))

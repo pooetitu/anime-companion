@@ -13,6 +13,5 @@ def load_view_list_data():
 
 
 def save_view_list_data(anime_list):
-    print(anime_list)
     with open("./assets/animes.json", "w") as file:
         file.write(json.dumps(anime_list, sort_keys=True, indent=4))
