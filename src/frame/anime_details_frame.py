@@ -74,11 +74,13 @@ class AnimeDetailsFrame(Frame):
                                              "favorite": False}
         self.add_anime_button.configure(text="Retirer de ma liste")
         self.add_anime_button['command'] = self.remove_anime_to_list
+        save_view_list_data(self.anime_list)
 
     def remove_anime_to_list(self):
         del self.anime_list[self.anime.title]
         self.add_anime_button.configure(text="Ajouter à ma liste")
         self.add_anime_button['command'] = self.add_anime_to_list
+        save_view_list_data(self.anime_list)
 
     def destroy(self):
         self.destroyed = True
