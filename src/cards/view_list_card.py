@@ -20,7 +20,6 @@ class ViewListCard(ttk.Frame):
 
 
     def create_widgets(self):
-        # self.card.pack(ipadx=10, ipady=10, fill='x')
 
         # IMAGE / TITLE / DATE IN LEFT
         self.image_label = ttk.Label(self)
@@ -39,7 +38,6 @@ class ViewListCard(ttk.Frame):
         self.delete_button.pack(side="right", padx=5)
 
     def set_anime_card(self, anime: Anime):
-        # print(anime.title, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
         self.get_image_from_url(anime.poster_image_url)
         self.title.configure(text=anime.title)
         self.date.configure(text=anime.started_at.strftime("%d %B %Y"))

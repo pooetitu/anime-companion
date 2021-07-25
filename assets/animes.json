@@ -1,25 +1,4 @@
 {
-    "Airy Me": {
-        "date": "2013-07-17 00:00:00",
-        "favorite": false,
-        "status": "ViewStatus.NOT_STARTED",
-        "title": "Airy Me",
-        "viewed_episodes": 0
-    },
-    "Narue no Sekai": {
-        "date": "2003-04-05 00:00:00",
-        "favorite": false,
-        "status": "ViewStatus.NOT_STARTED",
-        "title": "Narue no Sekai",
-        "viewed_episodes": 0
-    },
-    "Naruto": {
-        "date": "2002-10-03 00:00:00",
-        "favorite": false,
-        "status": "ViewStatus.NOT_STARTED",
-        "title": "Naruto",
-        "viewed_episodes": 0
-    },
     "Naruto: Shippuuden Movie 1": {
         "date": "2007-08-04 00:00:00",
         "favorite": false,

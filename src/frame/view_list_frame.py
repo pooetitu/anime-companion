@@ -20,18 +20,13 @@ class ViewListFrame(ttk.Frame):
         self.create_widgets()
 
     def create_widgets(self):
-        print()
         for anime in self.anime_list.values():
-            # print(anime)
             anime_card = ViewListCard(anime, self.scrollable.scrollable_frame, self.kitsu_client)
-            anime_card.delete_button["command"] = lambda: self.delete_clicked(copy.deepcopy(anime["title"]))
-            # print(anime["title"])
-
+            anime_card.delete_button["command"] = lambda title= anime["title"]: self.delete_clicked(title)
             anime_card.pack(pady=10, anchor="nw", fill='both', expand=1)
             self.anime_card[anime["title"]] = anime_card
 
     def delete_clicked(self, anime_title):
-        print(anime_title)
         del self.anime_list[anime_title]
         save_view_list_data(self.anime_list)
         self.anime_card[anime_title].destroy()
