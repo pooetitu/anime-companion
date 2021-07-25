@@ -13,7 +13,7 @@ class Application(ttk.Frame):
         self.anime_list = anime_list
         self.kitsu_client = kitsu_client
         self.tabControl = ttk.Notebook(self)
-        self.homeFrameTab = HomeFrame(self.tabControl)
+        self.homeFrameTab = HomeFrame(self.display_anime_details_page, master=self.tabControl)
         self.searchAnimeTab = SearchAnimeFrame(kitsu_client, self.display_anime_details_page, self.tabControl)
         self.viewListTab = ViewListFrame(self.tabControl, anime_list=anime_list)
         self.animeDetailsFrame = AnimeDetailsFrame(kitsu_client, self.close_anime_details_page, master=self,
