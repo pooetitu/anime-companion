@@ -1,3 +1,4 @@
+import asyncio
 import tkinter as tk
 
 import kitsu
@@ -5,6 +6,7 @@ import kitsu
 from src.main_window import Application
 from src.utils.AnimeList import AnimeList
 
+asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 root = tk.Tk()
 root.title("Anime companion")
 root.wm_minsize(600, 400)
